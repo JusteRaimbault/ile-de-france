@@ -18,11 +18,11 @@ config:
   hts: entd
 
   # Define sampling rate and random seed for the output population
-  sampling_rate: 0.001
-  random_seed: 1234
+  sampling_rate: 0.01
+  random_seed: 42
 
   # Paths to the input data and where the output should be stored
-  data_path: /path/to/my/data
+  data_path: data
   output_path: output
 
   # Only interesting if you run the simulation
