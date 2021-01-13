@@ -28,6 +28,12 @@ def configure(context):
     context.stage("data.spatial.municipalities")
 
 def write_poly(df, path, geometry_column = "geometry"):
+    df2 = df
+    df2["aggregate"] = 0
+    area2 = df2.dissolve(by = "aggregate")[geometry_column].values[0]
+    print("Lambert 93 Bbox for osm filtering polygon : xmin = "+str(min([c[0] for c in area2.exterior.coords]))+" ; xmax = "+str(max([c[0] for c in area2.exterior.coords]))+" ; ymin = "+str(min([c[1] for c in area2.exterior.coords]))+" ; ymax = "+str(max([c[1] for c in area2.exterior.coords])))
+    # ! already in wgs84 -> pb iris file?
+
     df = df.to_crs("EPSG:4326")
 
     df["aggregate"] = 0
@@ -41,6 +47,9 @@ def write_poly(df, path, geometry_column = "geometry"):
     data.append("polyfile")
     data.append("polygon")
 
+    print("Bbox for osm filtering polygon : xmin = "+str(min([c[0] for c in area.exterior.coords]))+" ; xmax = "+str(max([c[0] for c in area.exterior.coords]))+" ; ymin = "+str(min([c[1] for c in area.exterior.coords]))+" ; ymax = "+str(max([c[1] for c in area.exterior.coords])))
+    # issue in reprojection from Lambert 93 (EPSG:2154) to wgs84? (bbox is -1.86,-5)   
+ 
     for coordinate in area.exterior.coords:
         data.append("    %e    %e" % coordinate)
 
@@ -68,11 +77,13 @@ def execute(context):
         railway_tags = context.config("osm_railways")
 
         data.osm.osmosis.run(context, [
-            "--read-%s" % mode, "%s/%s" % (context.config("data_path"), path),
+            "--read-%s" % mode, "../../%s/%s" % (context.config("data_path"), path),
             "--tag-filter", "accept-ways", "highway=%s" % highway_tags, "railway=%s" % railway_tags,
             "--bounding-polygon", "file=%s/boundary.poly" % context.path(), "completeWays=yes",
             "--write-pbf", "filtered_%d.osm.pbf" % index
         ])
+        
+        print("Filtered osm file for index "+str(index)+" has size "+str(os.path.getsize("filtered_%d.osm.pbf" % index)))
 
     # Merge filtered files if there are multiple ones
     print("Merging and compressing OSM data...")

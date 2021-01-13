@@ -15,7 +15,10 @@ def run(context, arguments = [], cwd = None):
     context.stage("data.osm.osmosis")
 
     if cwd is None:
+    #    cwd = context.path()+"/../.."
+    # this fix for the correct data path makes it fail when writing output
         cwd = context.path()
+    print("Calling osmosis from"+cwd)
 
     # Prepare command line
     command_line = [
