@@ -15,6 +15,10 @@ config:
   processes: 4
   osmosis_binary: osmosis
 
+  # eqasim
+  eqasim_repository: https://github.com/JusteRaimbault/eqasim-java.git
+  eqasim_branch: develop
+
   # Define whether to use ENTD or EGT as the household travel survey (HTS)
   hts: entd
 
