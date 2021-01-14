@@ -6,14 +6,21 @@ working_directory: cache
 
 # This section defines which parts of the pipeline should be run
 run:
-  - synthesis.output # To create the output population in the output_path (see below)
-  - matsim.output # Uncomment, if you want to run the full simulation (you'll need Java for that)
+  #- synthesis.output # To create the output population in the output_path (see below)
+  - matsim.simulation.prepare
+  #- matsim.output # Uncomment, if you want to run the full simulation (you'll need Java for that)
 
 # Here the configuraiton of the pipeline starts
 config:
   # Some general configuration
-  processes: 4
+  processes: 10
   osmosis_binary: osmosis
+  maven_skip_tests: True
+
+  # cordon toll - shapefile relative to the data path
+  cordon_toll_price: 5
+  cordon_toll_shapefile: cordon/cordon.shp
+  cordon_toll_name: paris
 
   # eqasim
   eqasim_repository: https://github.com/JusteRaimbault/eqasim-java.git
