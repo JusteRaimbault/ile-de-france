@@ -5,6 +5,7 @@ import matsim.runtime.eqasim as eqasim
 
 def configure(context):
     context.stage("matsim.simulation.prepare")
+    context.stage("matsim.simulation.toll")
 
     context.stage("matsim.runtime.java")
     context.stage("matsim.runtime.eqasim")
