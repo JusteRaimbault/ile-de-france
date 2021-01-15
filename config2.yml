@@ -20,7 +20,7 @@ config:
   maven_skip_tests: True
 
   # cordon toll - shapefile relative to the data path
-  cordon_toll_price: 0
+  cordon_toll_price: 10
   cordon_toll_shapefile: cordon/cordon.shp
   cordon_toll_name: paris
 
