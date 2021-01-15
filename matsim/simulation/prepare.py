@@ -122,17 +122,18 @@ def execute(context):
         ])
 
     # add cordon toll around Paris
-    if context.config("cordon_toll_price") is not None:
-        if float(context.config("cordon_toll_price")) > 0.0:
-            if context.config("cordon_toll_shapefile") is not None and context.config("cordon_toll_name") is not None:
-                eqasim.run(context, "org.eqasim.core.scenario.spatial.RunCordonTollSetup", [
-                    "--input-path", "%snetwork.xml.gz" % context.config("output_prefix"),
-                    "--output-path", "%stoll_links.xml" % context.config("output_prefix"),
-                    "--shape-path", context.config("data_prefix")+"/"+context.config("cordon_toll_shapefile"),
-                    "--shape-attribute", "name",
-                    "--shape-value", context.config("cordon_toll_name"),
-                    "--price", context.config("cordon_toll_price")
-                ])
+    tollprice = context.config("cordon_toll_price")
+    if tollprice is None:
+        tollprice = 0.0
+    if context.config("cordon_toll_shapefile") is not None and context.config("cordon_toll_name") is not None:
+        eqasim.run(context, "org.eqasim.core.scenario.spatial.RunCordonTollSetup", [
+            "--input-path", "%snetwork.xml.gz" % context.config("output_prefix"),
+            "--output-path", "%stoll_links.xml" % context.config("output_prefix"),
+            "--shape-path", context.config("data_prefix")+"/"+context.config("cordon_toll_shapefile"),
+            "--shape-attribute", "name",
+            "--shape-value", context.config("cordon_toll_name"),
+            "--price", tollprice
+        ])
 
     # Route population
     eqasim.run(context, "org.eqasim.core.scenario.routing.RunPopulationRouting", [
