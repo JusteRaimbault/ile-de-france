@@ -9,8 +9,9 @@ run:
   #- synthesis.output # To create the output population in the output_path (see below)
   #- matsim.simulation.prepare
   #- matsim.simulation.debug
-  #- matsim.simulation.toll
-  - matsim.output # Uncomment, if you want to run the full simulation (you'll need Java for that)
+  #- matsim.runtime.eqasim
+  - matsim.simulation.toll
+  #- matsim.output # Uncomment, if you want to run the full simulation (you'll need Java for that)
 
 # Here the configuraiton of the pipeline starts
 config:
@@ -20,9 +21,9 @@ config:
   maven_skip_tests: True
 
   # cordon toll - shapefile relative to the data path
-  cordon_toll_price: 0
+  cordon_toll_price: 10000
   cordon_toll_shapefile: cordon/cordon.shp
-  cordon_toll_name: paris
+  cordon_toll_name: test
 
   # eqasim
   eqasim_repository: https://github.com/JusteRaimbault/eqasim-java.git
@@ -33,6 +34,7 @@ config:
 
   # Define sampling rate and random seed for the output population
   sampling_rate: 0.05
+  #sampling_rate: 0.33
   random_seed: 42
 
   # Paths to the input data and where the output should be stored
@@ -40,4 +42,4 @@ config:
   output_path: output
 
   # Only interesting if you run the simulation
-  java_memory: 14G
+  java_memory: 16G
