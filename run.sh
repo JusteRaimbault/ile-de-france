@@ -2,6 +2,8 @@
 #conda activate ile-de-france
 # -> do before run
 
+paramfile=$1
+
 # backup config
 mv config.yml config_bk.yml
 
@@ -9,9 +11,12 @@ while read line; do
   echo "Run:$line"
   name="$(echo $line | cut -d';' -f1)"
   price="$(echo $line | cut -d';' -f2)"
-  seed="$(echo $line | cut -d';' -f3)"
+  iters="$(echo $line | cut -d';' -f3)"
+  seed="$(echo $line | cut -d';' -f4)"
+  
   echo "Toll name = $name"
   echo "Toll price = $price"
+  echo "Iterations = $iters"
   echo "Seed = $seed"
   
   # update config file
@@ -35,13 +40,13 @@ while read line; do
   rm config.yml
 
   cd output
-  java -Xmx14G -cp ile_de_france_run.jar org.eqasim.ile_de_france.RunSimulation --config-path ile_de_france_config.xml --config:global.randomSeed $seed
-  
+  java -Xmx16G -cp ile_de_france_run.jar org.eqasim.ile_de_france.RunSimulation --config-path ile_de_france_config.xml --config:global.randomSeed $seed --config:controler.lastIteration $iters --config:controler.writeTripsInterval 1 --config:counts.writeCountsInterval 1 --config:planCalcScore.scoringParameters[marginalUtilityOfMoney="0.0"].marginalUtilityOfMoney 1.0
+
   #cat config.yml
 
-  mv simulation_output "simulation_output_"$name"_"$price"_"$seed
+  mv simulation_output "simulation_output_"$name"_"$price"_"$iters"_"$seed
   cd ..
-done <params.csv
+done <$paramfile
 
 mv config_bk.yml config.yml
 

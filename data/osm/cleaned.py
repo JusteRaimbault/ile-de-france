@@ -83,7 +83,7 @@ def execute(context):
             "--write-pbf", "filtered_%d.osm.pbf" % index
         ])
         
-        print("Filtered osm file for index "+str(index)+" has size "+str(os.path.getsize("filtered_%d.osm.pbf" % index)))
+        #print("Filtered osm file for index "+str(index)+" has size "+str(os.path.getsize("filtered_%d.osm.pbf" % index)))
 
     # Merge filtered files if there are multiple ones
     print("Merging and compressing OSM data...")
